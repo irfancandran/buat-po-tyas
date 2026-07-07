@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buat Purchase Order</title>
+<title>Buat Purchase Order - M & D Collection</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -38,12 +38,12 @@
     align-items:center;
     justify-content:space-between;
     gap:16px;
-    margin-bottom:28px;
+    margin-bottom:22px;
     flex-wrap:wrap;
   }
   .masthead h1{
     font-family:'Fraunces',serif;
-    font-size:28px;
+    font-size:26px;
     font-weight:600;
     color:var(--navy-deep);
     margin:0;
@@ -103,17 +103,27 @@
     transition:border-color .15s;
   }
   input:focus,textarea:focus{outline:none;border-color:var(--navy);}
-  textarea{resize:vertical;min-height:70px;}
+  textarea{resize:vertical;min-height:60px;}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   @media (max-width:560px){.row2{grid-template-columns:1fr;}}
 
-  .items-head{
-    display:none;
+  .company-summary{
+    display:flex;align-items:center;justify-content:space-between;
+    cursor:pointer;
   }
+  .company-summary-text{font-size:15px;color:var(--text-soft);}
+  .company-summary-text b{color:var(--navy-deep);}
+  .link-btn{
+    background:none;border:none;color:var(--navy);font-weight:700;font-size:14px;
+    cursor:pointer;text-decoration:underline;padding:0;
+  }
+  .company-edit{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+  .company-edit.open{display:block;}
+
   .item-row{
     border:1px solid var(--line);
     border-radius:10px;
-    padding:14px 14px 6px;
+    padding:14px 14px 12px;
     margin-bottom:12px;
     position:relative;
     background:#FCFCFB;
@@ -128,15 +138,22 @@
     grid-template-columns:2fr 1fr 1fr;
     gap:10px;
   }
-  @media (max-width:560px){.item-grid{grid-template-columns:1fr 1fr;}
-    .item-grid > div:first-child{grid-column:1/-1;}}
-  .item-grid label{margin-top:0;font-size:12.5px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.03em;}
-  .subtotal-line{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);
-    font-size:14px;
+  .item-grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:10px;
   }
-  .subtotal-line .amt{font-weight:700;color:var(--navy-deep);}
+  @media (max-width:560px){
+    .item-grid{grid-template-columns:1fr 1fr;}
+    .item-grid > div:first-child{grid-column:1/-1;}
+  }
+  .item-grid label,.item-grid2 label{margin-top:0;font-size:12.5px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.03em;}
+  .row-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);
+    font-size:13.5px;color:var(--text-soft);
+  }
   .remove-btn{
     background:none;border:none;color:var(--red);font-size:13px;font-weight:600;
     cursor:pointer;padding:4px 0;
@@ -157,17 +174,51 @@
   }
   .add-btn:hover{background:#EEF1F6;}
 
-  .total-box{
-    display:flex;justify-content:space-between;align-items:center;
-    background:var(--navy-deep);
-    color:#fff;
-    border-radius:10px;
-    padding:16px 18px;
-    margin-top:18px;
-    font-family:'Fraunces',serif;
+  .est-total{
+    text-align:right;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-top:14px;
+    font-style:italic;
   }
-  .total-box .lbl{font-size:15px;color:#C9CEDC;}
-  .total-box .val{font-size:22px;font-weight:700;color:#fff;}
+  .est-total b{color:var(--navy-deep);font-style:normal;}
+
+  .sig-preview{
+    margin-top:12px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .sig-box{
+    border:1.5px dashed var(--line);
+    border-radius:10px;
+    width:180px;
+    height:90px;
+    display:flex;align-items:center;justify-content:center;
+    background:#FCFCFB;
+    overflow:hidden;
+  }
+  .sig-box img{max-width:100%;max-height:100%;}
+  .sig-box .placeholder{color:var(--text-soft);font-size:13px;text-align:center;padding:8px;}
+  .file-btn-wrap{display:flex;flex-direction:column;gap:8px;}
+  .file-label{
+    display:inline-block;
+    padding:10px 16px;
+    background:var(--navy);
+    color:#fff;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    text-align:center;
+  }
+  .file-label:hover{background:var(--navy-deep);}
+  input[type=file]{display:none;}
+  .sig-remove{
+    background:none;border:none;color:var(--red);font-size:13px;font-weight:600;
+    cursor:pointer;text-align:left;padding:0;
+  }
 
   .generate-btn{
     width:100%;
@@ -196,9 +247,6 @@
   }
   .banner.error{display:block;background:#FBEAE6;color:var(--red);border:1px solid #E7BBAF;}
   .banner.ok{display:block;background:#E8F3EC;color:var(--green);border:1px solid #B9DCC5;}
-
-  .saved-note{font-size:13px;color:var(--text-soft);margin-top:8px;display:flex;align-items:center;gap:6px;}
-  .saved-note .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
 </style>
 </head>
 <body>
@@ -207,64 +255,54 @@
   <div class="masthead">
     <div>
       <h1>Buat Purchase Order</h1>
-      <p>Isi formulir di bawah, lalu unduh sebagai PDF untuk dikirim ke supplier.</p>
+      <p>M & D Collection — isi form, unduh PDF siap kirim.</p>
     </div>
     <div class="stamp">
       <div class="no">No. PO</div>
-      <div class="val" id="poNumberPreview">PO/—</div>
+      <div class="val" id="poNumberPreview">—</div>
     </div>
   </div>
 
   <div id="banner" class="banner"></div>
 
-  <!-- BUYER -->
+  <!-- BUYER (collapsed, default) -->
   <div class="card">
-    <h2><span class="badge-num">1</span> Data Perusahaan Anda</h2>
-    <p class="sub">Data ini akan otomatis tersimpan di perangkat ini, jadi tidak perlu diketik ulang setiap kali.</p>
-    <label for="buyerName">Nama Perusahaan / Toko</label>
-    <input type="text" id="buyerName" placeholder="Contoh: Toko Sumber Rejeki">
-    <label for="buyerAddress">Alamat</label>
-    <input type="text" id="buyerAddress" placeholder="Jl. Contoh No. 123, Bandung">
-    <div class="row2">
-      <div>
-        <label for="buyerPhone">Telepon / WhatsApp</label>
-        <input type="text" id="buyerPhone" placeholder="0812-3456-7890">
+    <div class="company-summary" id="companySummaryToggle">
+      <div class="company-summary-text">
+        Dari: <b id="companySummaryName">M & D Collection</b> (data ini sudah otomatis, tidak perlu diisi lagi)
       </div>
-      <div>
-        <label for="buyerEmail">Email (boleh dikosongkan)</label>
-        <input type="text" id="buyerEmail" placeholder="nama@email.com">
-      </div>
+      <button type="button" class="link-btn" id="companyToggleBtn">Ubah</button>
     </div>
-    <div class="saved-note" id="savedNote" style="visibility:hidden;"><span class="dot"></span> Data perusahaan tersimpan</div>
+    <div class="company-edit" id="companyEditPanel">
+      <label for="buyerName">Nama Perusahaan</label>
+      <input type="text" id="buyerName">
+      <label for="buyerAddress">Alamat (boleh lebih dari 1 baris)</label>
+      <textarea id="buyerAddress"></textarea>
+      <label for="buyerPhone">Telepon</label>
+      <input type="text" id="buyerPhone">
+      <button type="button" class="link-btn" id="companySaveBtn" style="margin-top:14px;">Simpan Perubahan</button>
+    </div>
   </div>
 
   <!-- SUPPLIER -->
   <div class="card">
-    <h2><span class="badge-num">2</span> Data Supplier</h2>
+    <h2><span class="badge-num">1</span> Kepada (Supplier)</h2>
     <p class="sub">Siapa yang akan menerima Purchase Order ini.</p>
-    <label for="supName">Nama Supplier</label>
-    <input type="text" id="supName" placeholder="Contoh: PT Maju Jaya Distribusi">
-    <label for="supAddress">Alamat Supplier</label>
-    <input type="text" id="supAddress" placeholder="Jl. Industri No. 45, Jakarta">
-    <div class="row2">
-      <div>
-        <label for="supContact">Nama Contact Person (jika ada)</label>
-        <input type="text" id="supContact" placeholder="Bpk/Ibu ...">
-      </div>
-      <div>
-        <label for="supPhone">Telepon Supplier</label>
-        <input type="text" id="supPhone" placeholder="021-1234567">
-      </div>
-    </div>
+    <label for="supPerson">Kepada (nama penerima)</label>
+    <input type="text" id="supPerson" placeholder="Contoh: Ibu Linda">
+    <label for="supCompany">Nama Perusahaan Supplier</label>
+    <input type="text" id="supCompany" placeholder="Contoh: PT Asia Multi Kreasi">
+    <label for="supAddress">Alamat Supplier (boleh lebih dari 1 baris)</label>
+    <textarea id="supAddress" placeholder="Jl Cibolerang No 19&#10;Kav D-E Bandung"></textarea>
   </div>
 
   <!-- PO DETAILS -->
   <div class="card">
-    <h2><span class="badge-num">3</span> Nomor & Tanggal PO</h2>
+    <h2><span class="badge-num">2</span> Nomor & Tanggal PO</h2>
     <div class="row2">
       <div>
         <label for="poNumber">Nomor PO</label>
-        <input type="text" id="poNumber">
+        <input type="text" id="poNumber" placeholder="Contoh: 01/IV/2026">
       </div>
       <div>
         <label for="poDate">Tanggal PO</label>
@@ -275,21 +313,33 @@
 
   <!-- ITEMS -->
   <div class="card">
-    <h2><span class="badge-num">4</span> Daftar Barang yang Dipesan</h2>
-    <p class="sub">Isi setiap barang yang ingin dipesan. Tambah baris baru jika barangnya lebih dari satu.</p>
+    <h2><span class="badge-num">3</span> Daftar Barang</h2>
+    <p class="sub">Isi setiap barang yang dipesan.</p>
     <div id="itemsContainer"></div>
     <button type="button" class="add-btn" id="addItemBtn">+ Tambah Barang</button>
-    <div class="total-box">
-      <span class="lbl">Total Keseluruhan</span>
-      <span class="val" id="grandTotal">Rp 0</span>
-    </div>
+    <div class="est-total" id="estTotal"></div>
   </div>
 
   <!-- NOTES -->
   <div class="card">
-    <h2><span class="badge-num">5</span> Catatan Tambahan (Opsional)</h2>
-    <p class="sub">Contoh: syarat pembayaran, batas waktu pengiriman, dll.</p>
-    <textarea id="notes" placeholder="Contoh: Pembayaran transfer setelah barang diterima. Mohon dikirim sebelum tanggal 15."></textarea>
+    <h2><span class="badge-num">4</span> Catatan</h2>
+    <input type="text" id="notes" placeholder="Contoh: Pembayaran giro dengan tempo payment 60 hari">
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="card">
+    <h2><span class="badge-num">5</span> Tanda Tangan</h2>
+    <p class="sub">Upload foto tanda tangan sekali saja — otomatis dipakai lagi setiap kali buat PO baru.</p>
+    <label for="signerName">Nama Penandatangan</label>
+    <input type="text" id="signerName" placeholder="Contoh: Dwi Kristiyawati">
+    <div class="sig-preview">
+      <div class="sig-box" id="sigBox"><span class="placeholder">Belum ada tanda tangan</span></div>
+      <div class="file-btn-wrap">
+        <label class="file-label" for="sigUpload">Upload Foto Tanda Tangan</label>
+        <input type="file" id="sigUpload" accept="image/*">
+        <button type="button" class="sig-remove" id="sigRemoveBtn" style="display:none;">Hapus tanda tangan</button>
+      </div>
+    </div>
   </div>
 
   <button type="button" class="generate-btn" id="generateBtn">📄 Buat &amp; Unduh PDF</button>
@@ -299,13 +349,22 @@
 <script>
 (function(){
   let itemCount = 0;
+  let signatureDataUrl = null;
+
+  const DEFAULT_BUYER = {
+    name: 'M & D Collection',
+    address: 'Perum. Abdi Negara 1\nJl. Mekar Raya Blok H2 no 14\nRancaekek – Bandung',
+    phone: '085107917111'
+  };
+
+  const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
   function fmtRupiah(n){
     n = isNaN(n) ? 0 : n;
     return 'Rp ' + Math.round(n).toLocaleString('id-ID');
   }
 
-  function addItemRow(prefill){
+  function addItemRow(){
     itemCount++;
     const id = itemCount;
     const div = document.createElement('div');
@@ -316,57 +375,51 @@
       <div class="item-grid">
         <div>
           <label>Nama Barang</label>
-          <input type="text" class="f-name" placeholder="Contoh: Beras 25kg">
+          <input type="text" class="f-name" placeholder="Contoh: Kain Samantha col white">
         </div>
         <div>
-          <label>Jumlah</label>
-          <input type="number" class="f-qty" min="0" placeholder="0">
+          <label>Qty</label>
+          <input type="number" class="f-qty" min="0" placeholder="600">
         </div>
         <div>
           <label>Satuan</label>
-          <input type="text" class="f-unit" placeholder="pcs / karung / dus">
+          <input type="text" class="f-unit" placeholder="yr / pcs / kg">
         </div>
       </div>
-      <div class="item-grid" style="margin-top:10px;">
+      <div class="item-grid2">
         <div>
-          <label>Harga Satuan (Rp)</label>
-          <input type="number" class="f-price" min="0" placeholder="0">
+          <label>Harga per Satuan (Rp)</label>
+          <input type="number" class="f-price" min="0" placeholder="30500">
+        </div>
+        <div>
+          <label>Kode Artikel (opsional)</label>
+          <input type="text" class="f-article" placeholder="710.0392">
         </div>
       </div>
-      <div class="subtotal-line">
+      <div class="row-footer">
         <button type="button" class="remove-btn">Hapus barang ini</button>
-        <span>Subtotal: <span class="amt f-subtotal">Rp 0</span></span>
+        <span></span>
       </div>
     `;
     document.getElementById('itemsContainer').appendChild(div);
 
-    const qty = div.querySelector('.f-qty');
-    const price = div.querySelector('.f-price');
-    const subtotalEl = div.querySelector('.f-subtotal');
-    const removeBtn = div.querySelector('.remove-btn');
-
-    function recalcRow(){
-      const q = parseFloat(qty.value) || 0;
-      const p = parseFloat(price.value) || 0;
-      subtotalEl.textContent = fmtRupiah(q * p);
-      recalcGrandTotal();
-    }
-    qty.addEventListener('input', recalcRow);
-    price.addEventListener('input', recalcRow);
-    removeBtn.addEventListener('click', function(){
+    div.querySelector('.f-qty').addEventListener('input', recalcEstTotal);
+    div.querySelector('.f-price').addEventListener('input', recalcEstTotal);
+    div.querySelector('.remove-btn').addEventListener('click', function(){
       div.remove();
-      recalcGrandTotal();
+      recalcEstTotal();
     });
   }
 
-  function recalcGrandTotal(){
+  function recalcEstTotal(){
     let total = 0;
     document.querySelectorAll('.item-row').forEach(row=>{
       const q = parseFloat(row.querySelector('.f-qty').value) || 0;
       const p = parseFloat(row.querySelector('.f-price').value) || 0;
       total += q * p;
     });
-    document.getElementById('grandTotal').textContent = fmtRupiah(total);
+    const el = document.getElementById('estTotal');
+    el.innerHTML = total > 0 ? `Perkiraan total: <b>${fmtRupiah(total)}</b> <span style="font-style:normal;">(hanya untuk referensi, tidak dicetak di PDF)</span>` : '';
   }
 
   document.getElementById('addItemBtn').addEventListener('click', ()=>addItemRow());
@@ -384,47 +437,32 @@
   }
 
   function todayStr(){
-    const d = new Date();
-    return d.toISOString().slice(0,10);
+    return new Date().toISOString().slice(0,10);
   }
   function formatDateID(iso){
     if(!iso) return '-';
     const [y,m,d] = iso.split('-');
-    return `${d}/${m}/${y}`;
+    return `${parseInt(d,10)} ${MONTHS_ID[parseInt(m,10)-1]} ${y}`;
   }
 
-  async function generateDefaultPONumber(){
-    const now = new Date();
-    const ym = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0');
-    let counter = 1;
-    try{
-      const res = await window.storage.get('po-counter');
-      if(res && res.value){
-        const data = JSON.parse(res.value);
-        if(data.ym === ym){ counter = data.count + 1; }
-      }
-    }catch(e){ /* no counter yet */ }
-    return { number: `PO/${ym}/${String(counter).padStart(3,'0')}`, ym, counter };
-  }
-
-  async function saveCounter(ym, counter){
-    try{
-      await window.storage.set('po-counter', JSON.stringify({ym, count:counter}));
-    }catch(e){ console.error('Gagal menyimpan nomor PO', e); }
+  // ---------- Company (buyer) profile ----------
+  function fillCompanyForm(p){
+    document.getElementById('buyerName').value = p.name || '';
+    document.getElementById('buyerAddress').value = p.address || '';
+    document.getElementById('buyerPhone').value = p.phone || '';
+    document.getElementById('companySummaryName').textContent = p.name || 'Perusahaan Anda';
   }
 
   async function loadBuyerProfile(){
     try{
       const res = await window.storage.get('buyer-profile');
       if(res && res.value){
-        const p = JSON.parse(res.value);
-        document.getElementById('buyerName').value = p.name || '';
-        document.getElementById('buyerAddress').value = p.address || '';
-        document.getElementById('buyerPhone').value = p.phone || '';
-        document.getElementById('buyerEmail').value = p.email || '';
-        document.getElementById('savedNote').style.visibility = 'visible';
+        fillCompanyForm(JSON.parse(res.value));
+        return;
       }
-    }catch(e){ /* belum ada data tersimpan */ }
+    }catch(e){ /* belum ada, pakai default */ }
+    fillCompanyForm(DEFAULT_BUYER);
+    try{ await window.storage.set('buyer-profile', JSON.stringify(DEFAULT_BUYER)); }catch(e){}
   }
 
   async function saveBuyerProfile(){
@@ -432,17 +470,83 @@
       name: document.getElementById('buyerName').value.trim(),
       address: document.getElementById('buyerAddress').value.trim(),
       phone: document.getElementById('buyerPhone').value.trim(),
-      email: document.getElementById('buyerEmail').value.trim(),
     };
-    try{
-      await window.storage.set('buyer-profile', JSON.stringify(profile));
-      document.getElementById('savedNote').style.visibility = 'visible';
-    }catch(e){ console.error('Gagal menyimpan data perusahaan', e); }
+    try{ await window.storage.set('buyer-profile', JSON.stringify(profile)); }catch(e){}
+    document.getElementById('companySummaryName').textContent = profile.name || 'Perusahaan Anda';
   }
 
+  document.getElementById('companyToggleBtn').addEventListener('click', ()=>{
+    const panel = document.getElementById('companyEditPanel');
+    const open = panel.classList.toggle('open');
+    document.getElementById('companyToggleBtn').textContent = open ? 'Tutup' : 'Ubah';
+  });
+  document.getElementById('companySaveBtn').addEventListener('click', async ()=>{
+    await saveBuyerProfile();
+    showBanner('ok','Data perusahaan tersimpan.');
+    document.getElementById('companyEditPanel').classList.remove('open');
+    document.getElementById('companyToggleBtn').textContent = 'Ubah';
+  });
+
+  // ---------- Signature ----------
+  function renderSigBox(){
+    const box = document.getElementById('sigBox');
+    const removeBtn = document.getElementById('sigRemoveBtn');
+    if(signatureDataUrl){
+      box.innerHTML = `<img src="${signatureDataUrl}" alt="Tanda tangan">`;
+      removeBtn.style.display = 'inline-block';
+    } else {
+      box.innerHTML = `<span class="placeholder">Belum ada tanda tangan</span>`;
+      removeBtn.style.display = 'none';
+    }
+  }
+
+  async function loadSignature(){
+    try{
+      const res = await window.storage.get('signature-image');
+      if(res && res.value){ signatureDataUrl = res.value; }
+    }catch(e){ /* belum ada */ }
+    try{
+      const res2 = await window.storage.get('signer-name');
+      if(res2 && res2.value){ document.getElementById('signerName').value = res2.value; }
+    }catch(e){}
+    renderSigBox();
+  }
+
+  document.getElementById('sigUpload').addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(ev){
+      signatureDataUrl = ev.target.result;
+      renderSigBox();
+      try{ await window.storage.set('signature-image', signatureDataUrl); }catch(err){}
+      showBanner('ok','Tanda tangan tersimpan dan akan dipakai otomatis di PO berikutnya.');
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('sigRemoveBtn').addEventListener('click', async ()=>{
+    signatureDataUrl = null;
+    renderSigBox();
+    try{ await window.storage.delete('signature-image'); }catch(e){}
+  });
+  document.getElementById('signerName').addEventListener('change', async function(){
+    try{ await window.storage.set('signer-name', this.value.trim()); }catch(e){}
+  });
+
+  // ---------- PO number memory ----------
+  async function loadLastPoNumber(){
+    try{
+      const res = await window.storage.get('last-po-number');
+      if(res && res.value){ document.getElementById('poNumber').value = res.value; }
+    }catch(e){}
+    updatePoPreview();
+  }
+  async function saveLastPoNumber(val){
+    try{ await window.storage.set('last-po-number', val); }catch(e){}
+  }
   function updatePoPreview(){
     const val = document.getElementById('poNumber').value.trim();
-    document.getElementById('poNumberPreview').textContent = val || 'PO/—';
+    document.getElementById('poNumberPreview').textContent = val || '—';
   }
 
   function collectItems(){
@@ -452,8 +556,9 @@
       const qty = parseFloat(row.querySelector('.f-qty').value) || 0;
       const unit = row.querySelector('.f-unit').value.trim();
       const price = parseFloat(row.querySelector('.f-price').value) || 0;
+      const article = row.querySelector('.f-article').value.trim();
       if(name && qty > 0){
-        items.push({name, qty, unit: unit || '-', price, subtotal: qty*price});
+        items.push({name, qty, unit: unit || '-', price, article: article || '-'});
       }
     });
     return items;
@@ -462,35 +567,32 @@
   async function handleGenerate(){
     clearBanner();
     const buyerName = document.getElementById('buyerName').value.trim();
-    const supName = document.getElementById('supName').value.trim();
+    const supPerson = document.getElementById('supPerson').value.trim();
+    const supCompany = document.getElementById('supCompany').value.trim();
     const poNumber = document.getElementById('poNumber').value.trim();
     const poDate = document.getElementById('poDate').value;
     const items = collectItems();
 
-    if(!buyerName){ showBanner('error','Mohon isi Nama Perusahaan Anda terlebih dahulu (bagian 1).'); return; }
-    if(!supName){ showBanner('error','Mohon isi Nama Supplier terlebih dahulu (bagian 2).'); return; }
-    if(!poNumber){ showBanner('error','Mohon isi Nomor PO (bagian 3).'); return; }
-    if(items.length === 0){ showBanner('error','Mohon isi minimal satu barang dengan Jumlah lebih dari 0 (bagian 4).'); return; }
+    if(!buyerName){ showBanner('error','Data perusahaan Anda kosong — klik "Ubah" di bagian atas untuk mengisinya.'); return; }
+    if(!supPerson && !supCompany){ showBanner('error','Mohon isi nama penerima atau nama perusahaan supplier (bagian 1).'); return; }
+    if(!poNumber){ showBanner('error','Mohon isi Nomor PO (bagian 2).'); return; }
+    if(items.length === 0){ showBanner('error','Mohon isi minimal satu barang dengan Qty lebih dari 0 (bagian 3).'); return; }
 
-    await saveBuyerProfile();
-
-    const ym = poNumber.match(/(\d{6})/) ? poNumber.match(/(\d{6})/)[1] : (new Date()).getFullYear() + String((new Date()).getMonth()+1).padStart(2,'0');
-    const counterMatch = poNumber.match(/(\d+)$/);
-    if(counterMatch){ await saveCounter(ym, parseInt(counterMatch[1],10)); }
+    await saveLastPoNumber(poNumber);
 
     buildPDF({
       buyerName,
       buyerAddress: document.getElementById('buyerAddress').value.trim(),
       buyerPhone: document.getElementById('buyerPhone').value.trim(),
-      buyerEmail: document.getElementById('buyerEmail').value.trim(),
-      supName,
+      supPerson,
+      supCompany,
       supAddress: document.getElementById('supAddress').value.trim(),
-      supContact: document.getElementById('supContact').value.trim(),
-      supPhone: document.getElementById('supPhone').value.trim(),
       poNumber,
       poDate,
       items,
       notes: document.getElementById('notes').value.trim(),
+      signerName: document.getElementById('signerName').value.trim(),
+      signatureDataUrl,
     });
 
     showBanner('ok', 'PDF berhasil dibuat dan diunduh. Silakan cek folder Download.');
@@ -500,118 +602,102 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({unit:'pt', format:'a4'});
     const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 48;
-    let y = 56;
+    const margin = 56;
+    let y = 60;
 
-    // Header: buyer letterhead
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(16);
-    doc.setTextColor(22,35,63);
-    doc.text(data.buyerName, margin, y);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.setTextColor(90,95,110);
-    y += 16;
-    if(data.buyerAddress){ doc.text(data.buyerAddress, margin, y); y += 13; }
-    let contactLine = [data.buyerPhone, data.buyerEmail].filter(Boolean).join('  |  ');
-    if(contactLine){ doc.text(contactLine, margin, y); y += 13; }
+    doc.setFont('times','normal');
 
-    // Title top-right
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(20);
-    doc.setTextColor(22,35,63);
-    doc.text('PURCHASE ORDER', pageWidth - margin, 60, {align:'right'});
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(11);
-    doc.setTextColor(60,65,80);
-    doc.text('No: ' + data.poNumber, pageWidth - margin, 80, {align:'right'});
-    doc.text('Tanggal: ' + formatDateID(data.poDate), pageWidth - margin, 96, {align:'right'});
-
-    y = Math.max(y, 96) + 26;
-    doc.setDrawColor(220,218,211);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 26;
-
-    // Supplier block
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(11);
-    doc.setTextColor(22,35,63);
-    doc.text('Kepada Yth,', margin, y);
-    y += 16;
+    // Letterhead
     doc.setFontSize(12);
-    doc.text(data.supName, margin, y);
-    y += 15;
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.setTextColor(90,95,110);
-    if(data.supAddress){ doc.text(data.supAddress, margin, y); y += 13; }
-    if(data.supContact){ doc.text('Up: ' + data.supContact, margin, y); y += 13; }
-    if(data.supPhone){ doc.text('Telp: ' + data.supPhone, margin, y); y += 13; }
+    doc.setTextColor(20,20,20);
+    const buyerAddrLines = data.buyerAddress ? data.buyerAddress.split('\n') : [];
+    doc.text(data.buyerName, margin, y); y += 16;
+    buyerAddrLines.forEach(line=>{ if(line.trim()){ doc.text(line.trim(), margin, y); y += 16; } });
+    if(data.buyerPhone){ doc.text('Tlp : ' + data.buyerPhone, margin, y); y += 16; }
 
-    y += 14;
+    y += 26;
+    doc.setFont('times','bold');
+    doc.setFontSize(15);
+    const title = 'PURCHASE ORDER';
+    const titleWidth = doc.getTextWidth(title);
+    doc.text(title, pageWidth/2, y, {align:'center'});
+    doc.setLineWidth(0.8);
+    doc.line(pageWidth/2 - titleWidth/2, y+3, pageWidth/2 + titleWidth/2, y+3);
 
-    // Items table
+    y += 34;
+
+    // Kepada (left) / PO No + Date (right)
+    doc.setFont('times','normal');
+    doc.setFontSize(11);
+    const leftX = margin;
+    const rightLabelX = pageWidth - margin - 160;
+    let leftY = y;
+    let rightY = y;
+
+    doc.text('Kepada  : ' + (data.supPerson || '-'), leftX, leftY); leftY += 15;
+    doc.text('PO. NO.  : ' + data.poNumber, rightLabelX, rightY); rightY += 15;
+    if(data.supCompany){ doc.text(data.supCompany, leftX, leftY); leftY += 15; }
+    doc.text('Date       : ' + formatDateID(data.poDate), rightLabelX, rightY); rightY += 15;
+    const supAddrLines = data.supAddress ? data.supAddress.split('\n') : [];
+    supAddrLines.forEach(line=>{ if(line.trim()){ doc.text(line.trim(), leftX, leftY); leftY += 15; } });
+
+    y = Math.max(leftY, rightY) + 20;
+
+    // Table
     const body = data.items.map((it,idx)=>[
       idx+1,
       it.name,
       it.qty + ' ' + it.unit,
-      'Rp ' + Math.round(it.price).toLocaleString('id-ID'),
-      'Rp ' + Math.round(it.subtotal).toLocaleString('id-ID'),
+      Math.round(it.price).toLocaleString('id-ID') + ' / ' + it.unit,
+      it.article,
     ]);
-    const total = data.items.reduce((s,it)=>s+it.subtotal,0);
 
     doc.autoTable({
       startY: y,
       margin: {left: margin, right: margin},
-      head: [['No','Nama Barang','Jumlah','Harga Satuan','Subtotal']],
+      theme: 'grid',
+      head: [['No.','NAMA BARANG','QTY','HARGA','ARTIKEL']],
       body: body,
-      styles:{font:'helvetica', fontSize:10, textColor:[29,36,49], cellPadding:6},
-      headStyles:{fillColor:[22,35,63], textColor:255, fontStyle:'bold'},
+      styles:{font:'times', fontSize:10.5, textColor:[20,20,20], cellPadding:6, lineColor:[0,0,0], lineWidth:0.6},
+      headStyles:{fillColor:[255,255,255], textColor:[0,0,0], fontStyle:'bold', halign:'left'},
       columnStyles:{
-        0:{cellWidth:28, halign:'center'},
-        2:{halign:'center'},
-        3:{halign:'right'},
-        4:{halign:'right'},
+        0:{cellWidth:32, halign:'left'},
       },
-      foot: [['','','','TOTAL', 'Rp ' + Math.round(total).toLocaleString('id-ID')]],
-      footStyles:{fillColor:[241,230,201], textColor:[22,35,63], fontStyle:'bold'},
     });
 
-    let finalY = doc.lastAutoTable.finalY + 30;
+    let finalY = doc.lastAutoTable.finalY + 26;
 
     // Notes
     if(data.notes){
-      doc.setFont('helvetica','bold');
+      doc.setFont('times','normal');
       doc.setFontSize(11);
-      doc.setTextColor(22,35,63);
-      doc.text('Catatan:', margin, finalY);
-      finalY += 15;
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(10);
-      doc.setTextColor(60,65,80);
-      const split = doc.splitTextToSize(data.notes, pageWidth - margin*2);
-      doc.text(split, margin, finalY);
-      finalY += split.length * 13 + 10;
+      doc.text('Note : ' + data.notes, margin, finalY);
+      finalY += 24;
     }
 
-    // Signature
-    finalY += 20;
-    if(finalY > doc.internal.pageSize.getHeight() - 100){
+    finalY += 26;
+    if(finalY > doc.internal.pageSize.getHeight() - 160){
       doc.addPage();
       finalY = 60;
     }
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.setTextColor(60,65,80);
-    doc.text('Dipesan oleh,', margin, finalY);
-    doc.text(formatDateID(data.poDate), pageWidth - margin - 140, finalY, {align:'left'});
-    finalY += 55;
-    doc.line(margin, finalY, margin + 160, finalY);
-    finalY += 14;
-    doc.setFont('helvetica','bold');
-    doc.text(data.buyerName, margin, finalY);
 
-    const filename = 'PO_' + data.poNumber.replace(/[\/\\]/g,'-') + '_' + data.supName.replace(/[^a-zA-Z0-9]/g,'') + '.pdf';
+    doc.setFont('times','normal');
+    doc.setFontSize(11);
+    doc.text('Hormat Kami', margin, finalY);
+
+    let sigY = finalY + 16;
+    if(data.signatureDataUrl){
+      try{
+        doc.addImage(data.signatureDataUrl, margin, sigY, 110, 70);
+      }catch(e){ console.error('Gagal menambahkan gambar tanda tangan', e); }
+      sigY += 82;
+    } else {
+      sigY += 80;
+    }
+
+    doc.text('(' + (data.signerName || '................................') + ')', margin, sigY);
+
+    const filename = 'PO_' + (data.items[0] ? data.items[0].name.replace(/[^a-zA-Z0-9]/g,'') : 'Barang') + '_' + formatDateID(data.poDate).replace(/ /g,'-') + '.pdf';
     doc.save(filename);
   }
 
@@ -621,10 +707,8 @@
   document.getElementById('generateBtn').addEventListener('click', handleGenerate);
 
   loadBuyerProfile();
-  generateDefaultPONumber().then(r=>{
-    document.getElementById('poNumber').value = r.number;
-    updatePoPreview();
-  });
+  loadLastPoNumber();
+  loadSignature();
   addItemRow();
 })();
 </script>
